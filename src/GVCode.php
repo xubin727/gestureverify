@@ -24,8 +24,6 @@ class GVCode {
      */
     public function __construct($name)
     {
-        $this->checkRefererFrom($name);
-        
         $this->name = str_replace('/', '_', $name);
         
         $this->checkDdos();
@@ -81,6 +79,8 @@ class GVCode {
      */
     public function makeImg()
     {
+        $this->checkRefererFrom($name);
+        
         $this->_init();
         $this->_createSlide();
         $this->_createBg();
@@ -96,6 +96,8 @@ class GVCode {
      */
     public function check($offset=0)
     {
+        $this->checkRefererFrom($name);
+        
         $name = '_' . $this->name . '_';
         $name2 = $this->name;
         
@@ -246,6 +248,9 @@ class GVCode {
     
     /**
      * 获取所需的HTML代码
+     * @param string $imgApiUrl
+     * @param string $checkApiUrl
+     * @param string $srcImgApiUrl
      * @return string
      */
     public function getHtml($imgApiUrl, $checkApiUrl, $srcImgApiUrl)
@@ -268,9 +273,12 @@ s;
     /**
      * 获取img目录里的资源图片
      * @param string $pic
+     * @param string $name
      */
-    public function getSrcImg($pic)
+    public function getSrcImg($pic, $name)
     {
+        $this->checkRefererFrom($name);
+        
         $pic = dirname(__FILE__) . '/img/' . $pic; //var_dump($pic);exit;
         
         header('Content-Type: image/' . pathinfo($pic, PATHINFO_EXTENSION ));
