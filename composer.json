@@ -2,7 +2,7 @@
 	"name" : "xubin/gestureverify",
 	"description" : "图片划动验证",
 	"type" : "library",
-	"version" : "0.0.1",
+	"version" : "0.0.2",
 	"license" : "MIT",
 	"minimum-stability" : "dev",
 	"authors" : [{

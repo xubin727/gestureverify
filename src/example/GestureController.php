@@ -1,5 +1,4 @@
 <?php
-
 use Xubin\GestureVerification\GVCode;
 
 /**
