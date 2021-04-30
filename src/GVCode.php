@@ -258,16 +258,7 @@ class GVCode {
         $js = $this->_getJs($imgApiUrl, $checkApiUrl);
         $css = $this->_getCss($srcImgApiUrl);
         
-        return <<<s
-{$js}{$css}
-<!--form class="gv_code" onsubmit="return false;"><input type="submit" value="OK"></form-->
-<script type="text/javascript">
-GVCode.onsuccess(function(){
-console.log('验证通过代码');
-});
-</script>
-s;
-
+        return $js . $css;
     }
     
     /**
