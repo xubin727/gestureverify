@@ -1,0 +1,28 @@
+{
+	"name" : "xubin/gestureverify",
+	"description" : "图片划动验证",
+	"type" : "library",
+	"version" : "0.0.1",
+	"license" : "MIT",
+	"minimum-stability" : "dev",
+	"authors" : [{
+			"name" : "xubin",
+			"email" : "xubin727@163.com",
+			"role" : "PHP码农"
+		}
+	],
+	"require" : {
+		"php" : ">=5.6"
+	},
+	"require-dev" : {
+		"php" : ">=5.6"
+	},
+	"suggest" : {
+		"php" : ">=7.0"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Xubin\\GestureVerification\\" : "./src/"
+		}
+	}
+}
