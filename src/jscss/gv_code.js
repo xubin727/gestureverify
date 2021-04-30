@@ -431,9 +431,10 @@ var gv_code = {
             var objs = document.getElementByClassName('gv_code',-1);
             for (var i in objs) {
                 var o = objs[i];
-                o.innerHTML = '点击按钮进行验证';
-                gv_code._bind(o,'touchstart',_this.show);
-                gv_code._bind(o,'click',_this.show);
+                // o.innerHTML = '点击按钮进行验证';
+                // gv_code._bind(o,'touchstart',_this.show);
+                // gv_code._bind(o,'click',_this.show);
+				gv_code._bind(o,'submit',_this.show);
             }
         }
     },
