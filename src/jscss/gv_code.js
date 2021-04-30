@@ -1,7 +1,12 @@
-/*! gv_code 1.2 author:weiyingbin email:277612909@qq.com
-//@ object webiste: http://www.39gs.com/archive/259.html
-//@ https://github.com/binwind8/gv_code
-*/
+/** 
+基于 tncode 1.2
+@ object webiste: http://www.39gs.com/archive/259.html
+@ https://github.com/binwind8/tncode
+@author xubin
+@email xubin727@163.com
+@version 0.1.1
+ */
+
 if(!document.getElementByClassName){
     function hasClass(elem, cls) {
       cls = cls || '';
@@ -183,7 +188,7 @@ var gv_code = {
     _send_result_success:function(responseText,responseXML){
         gv_code._doing = false;
         if(responseText=='true'){
-            gv_code._gv_code.innerHTML = '√验证成功';
+            //gv_code._gv_code.innerHTML = '√验证成功';
             gv_code._showmsg('√验证成功',1);
             gv_code._result = true;
             document.getElementByClassName('hgroup').style.display="block";
@@ -461,8 +466,7 @@ window.onload = function(){
     }
     gv_code.init({
 		codeImgUrl: '',
-		checkUrl: '',
-		
+		checkUrl: '',		
 	});
 };
 
