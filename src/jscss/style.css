@@ -1,9 +1,9 @@
 /*按钮*/
-/*body{width:100%;overflow-x:hidden;}
-.clear{clear: both;}*'
+/*body{width:100%;overflow-x:hidden;}*/
+.clear{clear: both;}
 .gv_code{
-    cursor: pointer;/*
-    border: 1px solid #ccc;
+    cursor: pointer;
+    /*border: 1px solid #ccc;
     border-radius: 2px;
     width: 260px;
     height: 44px;

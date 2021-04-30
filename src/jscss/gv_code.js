@@ -435,6 +435,13 @@ var gv_code = {
                 // gv_code._bind(o,'touchstart',_this.show);
                 // gv_code._bind(o,'click',_this.show);
 				gv_code._bind(o,'submit',_this.show);
+				// console.log(_this);
+		
+				let gv_code_div = document.getElementById('gv_code_div');
+				let gv_code_div_left = (innerWidth - gv_code_div.offsetWidth ) / 2;
+				let gv_code_div_top = (innerHeight - gv_code_div.offsetHeight ) / 2;
+				gv_code_div.style.left = gv_code_div_left + 'px';
+				gv_code_div.style.top = gv_code_div_top + 'px';
             }
         }
     },

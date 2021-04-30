@@ -260,7 +260,7 @@ class GVCode {
         
         return <<<s
 {$js}{$css}
-<div class="gv_code"></div>
+<!--form class="gv_code" onsubmit="return false;"><input type="submit" value="OK"></form-->
 <script type="text/javascript">
 GVCode.onsuccess(function(){
 console.log('验证通过代码');
