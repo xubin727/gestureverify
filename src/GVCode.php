@@ -19,26 +19,24 @@ class GvCode {
     protected $name = '';
     
     /**
-     *
      * @param string $name 这个名字必须使用当前浏览页地址的controller名称的小写。如果url中含有module，那么需要把module部分一起传递。如：mymodule/controller
      */
-    public function __construct($name)
+    public function __construct($name='')
     {
         $this->name = str_replace('/', '_', $name);
         
-        $this->checkDdos();
-        
         if(!isset($_SESSION)){
             session_start();
-        }
+        }// print_r($_SESSION);
     }
     
     /**
      * 防DDOS攻击检查
+     * @param string $name 当前的验证码名称。如：loign
      */
-    public function checkDdos()
+    public function checkDdos($name)
     {
-        $name = '_' . $this->name . '_';
+        $name = '_' . $name . '_';
         if ($_SESSION['tn'.$name.'code_err_total'] > 10) {
             exit;
         }
@@ -46,41 +44,45 @@ class GvCode {
     
     /**
      * 检查请示是否从指定controller的页面来
-     * @param string|array $contId
+     * @param string|array $fromPage 请求来源controller的id，即referer
      */
-    public function checkRefererFrom($contId)
-    {
-        if (!$contId) return ;
+    public function checkRefererFrom($fromPage)
+    { //echo __LINE__ . $contId;
+        if (!$fromPage) return false;
         
-        if (is_string($contId)) {
-            $contLst = array($contId);
+        if (is_string($fromPage)) {
+            $contLst = array($fromPage);
         } else {
-            $contLst = $contId;
+            $contLst = $fromPage;
         }
-//         echo $contId;
+        //print_r( $contLst);
         $allow = false;
         $refer = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH);
-        foreach ($contLst as $cont_id) { //var_dump($cont_id, $refer);exit;
+        foreach ($contLst as $cont_id) { //var_dump($cont_id, $refer);//exit;
             $cont_id = str_replace('/', '\/', $cont_id);
-            if (preg_match('/^\/'.$cont_id.'/', $refer)) {
+            $match = preg_match('/^\/'.$cont_id.'/', $refer, $m); //var_dump( __LINE__, $m);
+            if ($match) {
                 $allow = true;
                 break;
             }
         }
         
-        if (!$allow) {
+        if (!$allow) { // echo __LINE__;
             exit;
         }
+        
+        return true;
         
     }
     
     /**
      * 输出验证图片
+     * @param string $name 请求来源controller的id，即referer
      */
-    public function makeImg()
+    public function makeImg($name)
     {
         $this->checkRefererFrom($name);
-        
+        //echo __LINE__;
         $this->_init();
         $this->_createSlide();
         $this->_createBg();
@@ -91,15 +93,16 @@ class GvCode {
 
     /**
      * 验证划动位置
-     * @param number $offset
+     * @param string $name  当前的验证码名称。如：loign
      * @return boolean
      */
-    public function check($offset=0)
+    public function check($name)
     {
         $this->checkRefererFrom($name);
+        $this->checkDdos($name);
         
-        $name = '_' . $this->name . '_';
-        $name2 = $this->name;
+        $name2 = $name;
+        $name = '_' . $name . '_';
         
         if(!$_SESSION['tn'.$name.'code_r']){
             return false;
@@ -125,21 +128,23 @@ class GvCode {
     
     /**
      * 检验是否验证通过
+     * @param string $name  当前的验证码名称。如：loign
      * @return boolean
      */
-    public function checkPassed()
+    public function checkPassed($name)
     {
-        $name = $this->name;
+//         $name = $this->name;
         return $_SESSION[$name . '_gv_code_checked'];
     }
     
     
     /**
      * 从会话中清除验证信息
+     * @param string $name  当前的验证码名称。如：loign
      */
-    public function removeGvCheck()
+    public function removeGvCheck($name)
     {
-        $name = $this->name;
+//         $name = $this->name;
         unset($_SESSION[$name . '_gv_code_checked']);
     }
 
@@ -261,11 +266,11 @@ class GvCode {
     /**
      * 获取img目录里的资源图片
      * @param string $pic
-     * @param string $name
+     * @param string|array $fromName  请求来源controller的id，即referer
      */
-    public function getSrcImg($pic, $name)
+    public function getSrcImg($pic, $fromName)
     {
-        $this->checkRefererFrom($name);
+        $this->checkRefererFrom($fromName);
         
         $pic = dirname(__FILE__) . '/img/' . $pic; //var_dump($pic);exit;
         
