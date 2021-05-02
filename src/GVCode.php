@@ -2,7 +2,7 @@
 namespace Xubin\GestureVerification;
 
 
-class GVCode {
+class GvCode {
     
     protected $im = null;
     protected $im_fullbg = null;

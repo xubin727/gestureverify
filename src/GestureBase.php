@@ -2,7 +2,7 @@
 namespace Xubin\GestureVerification;
 
 
-use Xubin\GestureVerification\GVCode;
+use Xubin\GestureVerification\GvCode;
 
 /**
  * 划动验证码
@@ -16,9 +16,9 @@ trait GestureBase {
 	{
 	    $pic = $_GET['pic'];
 	    
-	    $gvcode = new GVCode('login');
+	    $GvCode = new GvCode('login');
 	    
-	    $gvcode->getSrcImg($pic, 'login');
+	    $GvCode->getSrcImg($pic, 'login');
 	    
 	    exit;
 	}
@@ -28,8 +28,8 @@ trait GestureBase {
 	 */
 	public function actionLoginGvCode()
 	{
-	    $gvcode = new GVCode('login');
-	    $gvcode->makeImg();
+	    $GvCode = new GvCode('login');
+	    $GvCode->makeImg();
 	    exit;
 	}
 	
@@ -38,7 +38,7 @@ trait GestureBase {
 	 */
 	public function actionLoginGvCheck()
 	{
-	    $tn  = new GVCode('login');
+	    $tn  = new GvCode('login');
 	    if($tn->check()){
 	        echo "true";
 	    }else{
@@ -51,11 +51,11 @@ trait GestureBase {
 	 */
 	public function actionTest()
 	{
-	    $gvcode = new GVCode('');
+	    $GvCode = new GvCode('');
 	    $imgApiUrl = $this->createUrl('gesture/loginGvCode');
 	    $checkApiUrl = $this->createUrl('gesture/loginGvCheck');
 	    $srcImgApiUrl = $this->createUrl('gesture/img');
-	    $html = $gvcode->getHtml($imgApiUrl, $checkApiUrl, $srcImgApiUrl);
+	    $html = $GvCode->getHtml($imgApiUrl, $checkApiUrl, $srcImgApiUrl);
 	    
 	    echo "<html><body>{$html}</body></html>";
 	    exit;
