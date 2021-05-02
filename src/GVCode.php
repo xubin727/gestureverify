@@ -233,29 +233,26 @@ class GVCode {
      * 获取所需的js代码
      * @return string
      */
-    private function _getJs($imgApiUrl, $checkApiUrl)
+    private function _getJs()
     {
         $pathCss = __DIR__ . '/jscss/gv_code.js';
         
         $jsContnt = file_get_contents($pathCss);
-        $jsContnt = str_replace( array('%imgApiUrl%', '%checkApiUrl%'), array($imgApiUrl, $checkApiUrl), $jsContnt );
         $jsContnt = preg_replace("/\/\*[\s\S]*\*\//U", '', $jsContnt); // 清除多行注释
         $jsContnt = preg_replace("/\/\/.*/", '', $jsContnt); // 清除单行行注释
-        $jsContnt = preg_replace("/[\s\v]+/", ' ', $jsContnt); // 清除多余的空白字符
+//         $jsContnt = preg_replace("/[\s\v]+/", ' ', $jsContnt); // 清除多余的空白字符
         
         return "<script type=\"text/javascript\">\n{$jsContnt}\n</script>";
     }
     
     /**
      * 获取所需的HTML代码
-     * @param string $imgApiUrl
-     * @param string $checkApiUrl
      * @param string $srcImgApiUrl
      * @return string
      */
-    public function getHtml($imgApiUrl, $checkApiUrl, $srcImgApiUrl)
+    public function getHtml($srcImgApiUrl)
     {
-        $js = $this->_getJs($imgApiUrl, $checkApiUrl);
+        $js = $this->_getJs();
         $css = $this->_getCss($srcImgApiUrl);
         
         return $js . $css;

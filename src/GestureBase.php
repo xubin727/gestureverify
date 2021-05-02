@@ -1,17 +1,20 @@
 <?php
+namespace Xubin\GestureVerification;
+
+
 use Xubin\GestureVerification\GVCode;
 
 /**
  * 划动验证码
  */
-class GestureController extends XAdminBase {
+trait GestureBase {
 	
     /**
      * 资源图片显示
      */
 	public function actionImg()
 	{
-	    $pic = $this->_getparam('pic', '');
+	    $pic = $_GET['pic'];
 	    
 	    $gvcode = new GVCode('login');
 	    
@@ -21,7 +24,7 @@ class GestureController extends XAdminBase {
 	}
 	
 	/**
-	 * 登录界面用的划动验证码
+	 * 登录界面用的划动验证图
 	 */
 	public function actionLoginGvCode()
 	{
@@ -31,7 +34,7 @@ class GestureController extends XAdminBase {
 	}
 	
 	/**
-	 * 登录界面用的划动验证码验证
+	 * 登录界面用的划动验证
 	 */
 	public function actionLoginGvCheck()
 	{
@@ -59,31 +62,59 @@ class GestureController extends XAdminBase {
 	}
 
 	/**
-	 * 找回密码发送验证码
+	 * 找回密码划动验证图
 	 */
 	public function actionRepwdGvCode() {
-	    
+	    $this->forward('loginGvCode');
 	}
 
 	/**
-	 * 忘记密码
+	 * 忘记密码划动验证
 	 */
 	public function actionRepwdGvCheck() {
-	    
+	    $this->forward('loginGvCheck');
+	}
+	
+	/**
+	 * 找回密码发送验证码划动验证图
+	 */
+	public function actionRepwdSendGvCode() {
+	    $this->forward('loginGvCode');
+	}
+	
+	/**
+	 * 忘记密码发送验证码划动验证
+	 */
+	public function actionRepwdSendGvCheck() {
+	    $this->forward('loginGvCheck');
 	}
 
 	/**
-	 * 注册发送验证码，找回密码发送验证码
+	 * 注册划动验证
 	 */
 	public function actionRegGvCheck() {
-	    
+	    $this->forward('loginGvCheck');
 	}
 
 	/**
-	 * 注册
+	 * 注册划动验证图
 	 */
 	public function actionRegGvCode() {
-	    
+	    $this->forward('loginGvCode');
+	}
+	
+	/**
+	 * 注册发送验证码划动验证
+	 */
+	public function actionRegSendGvCheck() {
+	    $this->forward('loginGvCheck');
+	}
+	
+	/**
+	 * 注册发送验证码划动验证
+	 */
+	public function actionRegSendGvCode() {
+	    $this->forward('loginGvCode');
 	}
 	
 }

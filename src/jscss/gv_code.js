@@ -112,6 +112,10 @@ var gv_code = {
     _result:false,
     _err_c:0,
     _onsuccess:null,
+	_mouse_left:300,
+	_mouse_top:200,
+	_api_url: [],
+	_current: '',
     _bind:function(elm,evType,fn){
         //event.preventDefault();
         if (elm.addEventListener) {
@@ -143,6 +147,10 @@ var gv_code = {
         gv_code._is_moving = true;
     },
     _block_on_move:function(e){
+		gv_code._mouse_left = e.pageX;
+		gv_code._mouse_top = e.pageY;
+		//console.log(gv_code._mouse_left,gv_code._mouse_top);
+		
         if(!gv_code._doing)return true;
         if(!gv_code._is_moving)return true;
         e.preventDefault();
@@ -182,8 +190,14 @@ var gv_code = {
     _send_result:function(){
         var haddle = {success:gv_code._send_result_success,failure:gv_code._send_result_failure};
         gv_code._result = false;
+
+		let checkApiUrl = this._api_url[this._current].checkApiUrl;
+		if (-1 == checkApiUrl.indexOf('?')) 
+			checkApiUrl += '?tn_r='+gv_code._mark_offset;
+		else 
+			checkApiUrl += '&tn_r='+gv_code._mark_offset;
         var re = new _ajax();
-        re.request('get',/*gv_code._currentUrl()+*/'%checkApiUrl%?tn_r='+gv_code._mark_offset,haddle);
+        re.request('get', checkApiUrl, haddle);
     },
     _send_result_success:function(responseText,responseXML){
         gv_code._doing = false;
@@ -192,7 +206,7 @@ var gv_code = {
             gv_code._showmsg('√验证成功',1);
             gv_code._result = true;
             document.getElementByClassName('hgroup').style.display="block";
-            setTimeout(gv_code.hide,3000);
+            gv_code.hide(); // setTimeout(gv_code.hide,3000);
             if(gv_code._onsuccess){
                 gv_code._onsuccess();
             }
@@ -284,7 +298,10 @@ var gv_code = {
         var obj = document.getElementByClassName('slide_block');
         obj.style.cssText = "transform: translate(0px, 0px)";
     },
-    show:function(){
+    show:function(e){		
+		gv_code._current = window.event.target.id;
+		//console.log(window.event.target);
+		
         var obj = document.getElementByClassName('hgroup');
         if(obj){
             obj.style.display="none";
@@ -293,6 +310,11 @@ var gv_code = {
         gv_code._gv_code = this;
         document.getElementById('gv_code_div_bg').style.display="block";
         document.getElementById('gv_code_div').style.display="block";
+		window.event.stopPropagation();
+		let gv_code_div = document.getElementById('gv_code_div');
+		gv_code_div.style.top = Math.max(gv_code._mouse_top - gv_code_div.offsetHeight/2, gv_code_div.offsetHeight/2) + 'px';
+		gv_code_div.style.left = Math.max(gv_code._mouse_left - gv_code_div.offsetWidth/2, gv_code_div.offsetHeight/2) + 'px';
+		//console.log(gv_code);
     },
     hide:function(){
         document.getElementById('gv_code_div_bg').style.display="none";
@@ -360,7 +382,7 @@ var gv_code = {
     },
     _html:function(){
         var d = document.getElementById('gv_code_div_bg');
-        if(d)return;
+        if(d) return;
         var html = '<div class="gv_code_div_bg" id="gv_code_div_bg"></div><div class="gv_code_div" id="gv_code_div"><div class="loading">加载中</div><canvas class="gv_code_canvas_bg"></canvas><canvas class="gv_code_canvas_mark"></canvas><div class="hgroup"></div><div class="gv_code_msg_error"></div><div class="gv_code_msg_ok"></div><div class="slide"><div class="slide_block"></div><div class="slide_block_text">拖动左边滑块完成上方拼图</div></div><div class="tools"><div class="gv_code_close"></div><div class="gv_code_refresh"></div></div></div>';
         var bo = document.getElementsByTagName('body');
         appendHTML(bo[0],html);
@@ -377,7 +399,7 @@ var gv_code = {
     },*/
     refresh:function(){
         var isSupportWebp = !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0;
-        var _this = this;
+        var gv_code = GVCode;
         gv_code._err_c = 0;
         gv_code._is_draw_bg = false;
         gv_code._result = false;
@@ -387,9 +409,14 @@ var gv_code = {
         obj = document.getElementByClassName('gv_code_canvas_mark');
         obj.style.display="none";
         gv_code._img = new Image();
-        var img_url = "%imgApiUrl%";
+		//console.log(gv_code._api_url);
+		//console.log(gv_code._current);
+        var img_url = gv_code._api_url[gv_code._current].imgApiUrl;
         if(!isSupportWebp){//浏览器不支持webp
-            img_url+="&nowebp=1";
+			if (img_url.search(/\?/))
+            	img_url += "&nowebp=1";
+			else 
+				img_url += "?nowebp=1";
         }
         gv_code._img.src = img_url;
         gv_code._img.onload = function(){
@@ -410,8 +437,9 @@ var gv_code = {
         obj = document.getElementByClassName('slide_block_text');
         obj.style.display="block";
     },
-    init:function(){
+    init:function(options){
         var _this = this;
+		_this._api_url = options;
         if(!gv_code._img){
             gv_code._html();
             var obj = document.getElementByClassName('slide_block');
@@ -432,21 +460,19 @@ var gv_code = {
             gv_code._bind(obj,'touchstart',_this.refresh);
             gv_code._bind(obj,'click',_this.refresh);
 
-
             var objs = document.getElementByClassName('gv_code',-1);
             for (var i in objs) {
                 var o = objs[i];
                 // o.innerHTML = '点击按钮进行验证';
                 // gv_code._bind(o,'touchstart',_this.show);
                 // gv_code._bind(o,'click',_this.show);
-				gv_code._bind(o,'submit',_this.show);
-				// console.log(_this);
+				let event_type = o.dataset.gv_code_event_type;
+				console.log(o.id + ' bind: '+event_type);
+				gv_code._bind(o, event_type, _this.show);
 		
 				let gv_code_div = document.getElementById('gv_code_div');
-				let gv_code_div_left = (innerWidth - gv_code_div.offsetWidth ) / 2;
-				let gv_code_div_top = (innerHeight - gv_code_div.offsetHeight ) / 2;
-				gv_code_div.style.left = gv_code_div_left + 'px';
-				gv_code_div.style.top = gv_code_div_top + 'px';
+				gv_code_div.style.left = gv_code._mouse_left + 'px';
+				gv_code_div.style.top = gv_code._mouse_top + 'px';
             }
         }
     },
@@ -464,10 +490,10 @@ window.onload = function(){
     if(typeof _old_onload == 'function'){
         _old_onload();
     }
-    gv_code.init({
-		codeImgUrl: '',
-		checkUrl: '',		
-	});
+//    gv_code.init({
+//		imgApiUrl: '',
+//		checkApiUrl: '',		
+//	});
 };
 
 
