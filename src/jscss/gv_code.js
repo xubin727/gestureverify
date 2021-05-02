@@ -399,7 +399,7 @@ var gv_code = {
     },*/
     refresh:function(){
         var isSupportWebp = !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0;
-        var gv_code = GVCode;
+        var gv_code = GvCode;
         gv_code._err_c = 0;
         gv_code._is_draw_bg = false;
         gv_code._result = false;
@@ -484,7 +484,7 @@ var gv_code = {
     }
 };
 
-window.GVCode = gv_code;
+window.GvCode = gv_code;
 var _old_onload = window.onload;
 window.onload = function(){
     if(typeof _old_onload == 'function'){
