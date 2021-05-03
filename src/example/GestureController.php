@@ -13,7 +13,7 @@ class GestureController extends XAdminBase {
      */
     public function actionImg()
     {
-        $this->_Img(array('login')); // 多个接口通用，所以参数（来源页面）为多个，故以数组形式
+        $this->_srcImg(array('login'));
     }
     
     /**
@@ -21,7 +21,7 @@ class GestureController extends XAdminBase {
      */
     public function actionLoginGvCode()
     {
-        $this->_gvCode('login');
+        $this->_gvCode('login', 'login');
     }
     
     /**
@@ -29,63 +29,63 @@ class GestureController extends XAdminBase {
      */
     public function actionLoginGvCheck()
     {
-        $this->_gvCheck('login');
+        $this->_gvCheck('login', 'login');
     }
     
     /**
      * 注册划动验证
      */
     public function actionRegGvCheck() {
-        $this->_gvCheck('reg');
+        $this->_gvCheck('reg', 'login');
     }
     
     /**
      * 注册划动验证图
      */
     public function actionRegGvCode() {
-        $this->_gvCode('reg');
+        $this->_gvCode('reg', 'login');
     }
     
     /**
      * 注册发送验证码划动验证
      */
     public function actionRegSendGvCheck() {
-        $this->_gvCheck('regsend');
+        $this->_gvCheck('regsend', 'login');
     }
     
     /**
      * 注册发送验证码划动验证
      */
     public function actionRegSendGvCode() {
-        $this->_gvCode('regsend');
+        $this->_gvCode('regsend', 'login');
     }
     
     /**
      * 找回密码划动验证图
      */
     public function actionRepwdGvCode() {
-        $this->_gvCode('repwd');
+        $this->_gvCode('repwd', 'login');
     }
     
     /**
      * 忘记密码划动验证
      */
     public function actionRepwdGvCheck() {
-        $this->_gvCheck('repwd');
+        $this->_gvCheck('repwd', 'login');
     }
     
     /**
      * 找回密码发送验证码划动验证图
      */
     public function actionRepwdSendGvCode() {
-        $this->_gvCode('repwdsend');
+        $this->_gvCode('repwdsend', 'login');
     }
     
     /**
      * 忘记密码发送验证码划动验证
      */
     public function actionRepwdSendGvCheck() {
-        $this->_gvCheck('repwdsend');
+        $this->_gvCheck('repwdsend', 'login');
     }
 	
 }
